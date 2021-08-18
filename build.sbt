@@ -1,12 +1,10 @@
-val scala3Version = "3.0.1"
+lazy val root: Project =
+  project.in(file("."))
+    .settings(
 
-lazy val root = project
-  .in(file("."))
-  .settings(
-    name := "natural",
-    version := "0.1.0",
+      name         := "natural",
+      version      := "0.1.0",
+      scalaVersion := "3.0.1",
 
-    scalaVersion := scala3Version,
-
-    libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
-  )
+      libraryDependencies ++=
+        Seq("com.novocode" % "junit-interface" % "0.11" % "test"))
