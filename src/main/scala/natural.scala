@@ -17,7 +17,7 @@ object natural:
     (A => A) => A => A
 
   def Zero[A]: Nat[A] =
-    f => identity
+    f => x => x
 
   def Succ[A](n: Nat[A]): Nat[A] =
     f => x => f(n(f)(x))
@@ -28,14 +28,11 @@ object natural:
   def mul[A](m: Nat[A])(n: Nat[A]): Nat[A] =
     f => x => m(n(f))(x)
 
-  def exp[A](m: Nat[A])(n: Nat[A]): Nat[A] =
-    n compose m
+  def exp[A](m: Nat[A])(n: Nat[A] => Nat[A]): Nat[A] =
+    f => x => n(m)(f)(x)
 
   
   object compat:
 
     def eval(n: Nat[Int]): Int =
       n(_ + 1)(0)
-
-    def str(n: Nat[Int]): String =
-      eval(n).toString
