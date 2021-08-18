@@ -13,8 +13,7 @@ object natural:
   *    
   *   n == λf.λx.f(...f(x))  --applies x to f composed n times with itself
   */
-  type Nat[A] =
-    (A => A) => A => A
+  type Nat = [A] =>> (A => A) => A => A
 
   def Zero[A]: Nat[A] =
     f => x => x
@@ -31,7 +30,6 @@ object natural:
   def exp[A](m: Nat[A])(n: Nat[A] => Nat[A]): Nat[A] =
     f => x => n(m)(f)(x)
 
-  
   object compat:
 
     def eval(n: Nat[Int]): Int =
