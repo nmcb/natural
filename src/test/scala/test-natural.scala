@@ -1,15 +1,15 @@
 import org.junit.Test
 import org.junit.Assert.*
 
-import natural.*
+class TestRuntimeNat:
+  
+  import natural.runtime.*
 
-class TestNat:
-
-  def Nul[A]:   Nat[A] = Zero[A]
-  def One[A]:   Nat[A] = Succ(Nul)
-  def Two[A]:   Nat[A] = Succ(One)
-  def Three[A]: Nat[A] = Succ(Two)
-  def Four[A]:  Nat[A] = Succ(Three)
+  def Nul:   Nat = Zero
+  def One:   Nat = Succ(Nul)
+  def Two:   Nat = Succ(One)
+  def Three: Nat = Succ(Two)
+  def Four:  Nat = Succ(Three)
 
   import compat.*
 
@@ -20,8 +20,8 @@ class TestNat:
     assertEquals( eval( Three ), eval( add(One)(Two) ))
     assertEquals( eval( Four  ), eval( add(Two)(Two) ))
 
-  def Five[A]: Nat[A] = Succ(Four)
-  def Six[A]:  Nat[A]  = Succ(Five)
+  def Five: Nat = Succ(Four)
+  def Six:  Nat  = Succ(Five)
 
   @Test def testMul(): Unit =
     assertEquals( eval( Nul  ), eval( mul(Nul)(One)   ))   
@@ -31,9 +31,9 @@ class TestNat:
     assertEquals( eval( Four ), eval( mul(Two)(Two)   ))   
     assertEquals( eval( Six  ), eval( mul(Two)(Three) ))
 
-  def Seven[A]: Nat[A] = Succ(Six)
-  def Eight[A]: Nat[A] = Succ(Seven)
-  def Nine[A]:  Nat[A] = Succ(Eight)
+  def Seven: Nat = Succ(Six)
+  def Eight: Nat = Succ(Seven)
+  def Nine:  Nat = Succ(Eight)
 
   @Test def testExp(): Unit =
     assertEquals( eval( Nul   ), eval(exp(Nul)(One)   ))

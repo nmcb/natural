@@ -1,5 +1,6 @@
 object natural:
 
+
   /*
   * the church encoding of natural numbers in the lambda calculus defines
   * zero as to not apply a given function to given input and the succesor
@@ -13,24 +14,33 @@ object natural:
   *    
   *   n == λf.λx.f(...f(x))  --applies x to f composed n times with itself
   */
-  type Nat = [A] =>> (A => A) => A => A
+  object runtime:
+    
+    type Nat =
+      [A] => (A => A) => A => A
 
-  def Zero[A]: Nat[A] =
-    f => x => x
+    def Zero: Nat =
+      [A] => (f: A => A) => (a: A) => a
 
-  def Succ[A](n: Nat[A]): Nat[A] =
-    f => x => f(n(f)(x))
+    def Succ[A](n: Nat): Nat =
+      [A] => (f: A => A) => (a: A) => f(n(f)(a))
 
-  def add[A](m: Nat[A])(n: Nat[A]): Nat[A] =
-    f => x => m(f)(n(f)(x))
+    def one: Nat =
+      Succ(Zero)
 
-  def mul[A](m: Nat[A])(n: Nat[A]): Nat[A] =
-    f => x => m(n(f))(x)
+    def add(m: Nat)(n: Nat): Nat =
+      [A] => (f: A => A) => (a: A) => m(f)(n(f)(a))
 
-  def exp[A](m: Nat[A])(n: Nat[A] => Nat[A]): Nat[A] =
-    f => x => n(m)(f)(x)
+    def mul(m: Nat)(n: Nat): Nat =
+      [A] => (f: A => A) => (a: A) => m(n(f))(a)
 
-  object compat:
+    def exp(m: Nat)(n: Nat): Nat =
+      // the compiler throws a StackOverflowError without the type annotations!
+      [A] => (f: A => A) => (a: A) => (n[Nat](mul(m))(one): Nat)(f)(a) 
+      // and we would like to implememnt exp like this, correctly interfered.
+      // [A] => (f: A => A) => (a: A) => n(m)(f)(a) 
 
-    def eval(n: Nat[Int]): Int =
-      n(_ + 1)(0)
+    object compat:
+
+      def eval(n: Nat): Int =
+        n[Int](_ + 1)(0)
